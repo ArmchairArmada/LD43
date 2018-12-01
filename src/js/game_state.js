@@ -71,6 +71,31 @@ GameStateTitle.prototype.gainFocus = function(oldState) {
         var entity = new TestEntity(this.scene);
         this.scene.entityManager.add(entity);
     }
+
+    this.tilemap = new TileMap([
+        services.assetManager.images["floor.png"],
+        services.assetManager.images["wall.png"]
+    ],
+    40, 40,
+    [
+        [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+        [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+        [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+        [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+        [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+        [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+        [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+        [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+        [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+        [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+        [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+        [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+        [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+        [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+        [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+    ]);
+
+    this.tilemap.addSpriteTiles(this.scene.spriteManager);
 };
 
 GameStateTitle.prototype.loseFocus = function(oldState) {
@@ -83,20 +108,20 @@ GameStateTitle.prototype.update = function() {
         this.scene.update();
     }
 
-    if (services.inputManager.keyUpChange) {
-        this.scene.camera.y-=20;
+    if (services.inputManager.keyUp) {
+        this.scene.camera.y-=0.2;
     }
 
-    if (services.inputManager.keyDownChange) {
-        this.scene.camera.y+=20;
+    if (services.inputManager.keyDown) {
+        this.scene.camera.y+=0.2;
     }
 
-    if (services.inputManager.keyLeftChange) {
-        this.scene.camera.x-=20;
+    if (services.inputManager.keyLeft) {
+        this.scene.camera.x-=0.2;
     }
 
-    if (services.inputManager.keyRightChange) {
-        this.scene.camera.x+=20;
+    if (services.inputManager.keyRight) {
+        this.scene.camera.x+=0.2;
     }
 };
 
@@ -108,6 +133,8 @@ GameStateTitle.prototype.draw = function(ctx) {
 
     ctx.fillStyle = "rgb(" + r + "," + g + "," + b + ")";
     ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+
+    //this.tilemap.draw(ctx, this.scene.camera);
 
     this.scene.draw(ctx);
 };

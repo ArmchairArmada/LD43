@@ -26,7 +26,9 @@ function Game(canvasId) {
 
     services.assetManager.load({
         "images": [
-            "test.png"
+            "test.png",
+            "floor.png",
+            "wall.png"
         ]
     });
 }
