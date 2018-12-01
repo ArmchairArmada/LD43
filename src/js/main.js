@@ -11,6 +11,8 @@ function Game(canvasId) {
     this.canvas = document.getElementById(canvasId);
     this.ctx = this.canvas.getContext("2d");
 
+    services.inputManager = new InputManager(this.canvas);
+
     services.stateManager = new GameStateManager();
 
     services.stateManager.addState("intro", new GameStateIntro());
@@ -30,6 +32,9 @@ function Game(canvasId) {
 }
 
 Game.prototype.gameLoop = function() {
-    services.stateManager.update(this.ctx);
+    services.stateManager.update();
+    services.stateManager.draw(this.ctx);
     window.requestAnimationFrame(this.gameLoop.bind(this));
-}
+    // TODO: This may not be reliable because input events are not tied to the animation update
+    services.inputManager.clearChange();
+};
