@@ -44,11 +44,23 @@ GameStateIntro.prototype.update = function(ctx) {
 function GameStateTitle() {
     console.log("Creating Game State Title");
     this.scene = new Scene();
+
+    this.animation = {
+        playMode: "loop",
+        frames: [
+            {time: 30, value: [1, 0, 0]},
+            {time: 30, value: [0, 1, 0]},
+            {time: 30, value: [0, 0, 1]}
+        ]
+    };
+
+    this.animCursor = new AnimationCursor();
+    this.animCursor.play(this.animation);
 };
 
 GameStateTitle.prototype.gainFocus = function(oldState) {
     console.log("Game State Title gaining focus");
-    for (var i=0; i<1000; i++) {
+    for (var i=0; i<100; i++) {
         var entity = new TestEntity(this.scene);
         this.scene.entityManager.add(entity);
     }
@@ -59,8 +71,17 @@ GameStateTitle.prototype.loseFocus = function(oldState) {
 };
 
 GameStateTitle.prototype.update = function(ctx) {
-    ctx.fillStyle = "#FFFF00";
+    this.animCursor.update();
+
+    var p = this.animCursor.progress;
+    var r = Math.floor(255 * (this.animCursor.frame.value[0] * (1 - p) + this.animCursor.nextFrame.value[0] * p));
+    var g = Math.floor(255 * (this.animCursor.frame.value[1] * (1 - p) + this.animCursor.nextFrame.value[1] * p));
+    var b = Math.floor(255 * (this.animCursor.frame.value[2] * (1 - p) + this.animCursor.nextFrame.value[2] * p));
+
+    ctx.fillStyle = "rgb(" + r + "," + g + "," + b + ")";
     ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+
+    console.log(ctx.fillStyle);
 
     this.scene.update();
     this.scene.draw(ctx);
