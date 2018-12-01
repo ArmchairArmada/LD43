@@ -6,18 +6,30 @@ function main(canvasId) {
 
 // --------------------------------------------------------------------------------------------------------------------
 function Game(canvasId) {
+    var self = this;
+
     this.canvas = document.getElementById(canvasId);
     this.ctx = this.canvas.getContext("2d");
 
-    this.stateManager = new GameStateManager();
+    services.stateManager = new GameStateManager();
 
-    this.stateManager.addState("intro", new GameStateIntro());
-    this.stateManager.addState("title", new GameStateTitle());
+    services.stateManager.addState("intro", new GameStateIntro());
+    services.stateManager.addState("title", new GameStateTitle());
 
-    this.stateManager.switchState("intro");
+    services.stateManager.switchState("intro");
+
+    services.assetManager = new AssetManager("/assets/", function() {
+        services.stateManager.switchState("title");
+    });
+
+    services.assetManager.load({
+        "images": [
+            "test.png"
+        ]
+    });
 }
 
 Game.prototype.gameLoop = function() {
-    this.stateManager.update(this.ctx);
+    services.stateManager.update(this.ctx);
     window.requestAnimationFrame(this.gameLoop.bind(this));
 }
