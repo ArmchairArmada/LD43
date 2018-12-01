@@ -35,19 +35,24 @@ GameStateIntro.prototype.loseFocus = function(oldState) {
 };
 
 GameStateIntro.prototype.update = function(ctx) {
-    ctx.beginPath();
-    ctx.arc(100, 100, 100, 0, 2*Math.PI);
-    ctx.stroke();
+    ctx.fillStyle = "#FF0000";
+    ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
 };
 
 
 // --------------------------------------------------------------------------------------------------------------------
 function GameStateTitle() {
     console.log("Creating Game State Title");
+    this.spriteManager = new SpriteManager();
 };
 
 GameStateTitle.prototype.gainFocus = function(oldState) {
     console.log("Game State Title gaining focus");
+    this.sprite = new Sprite();
+    this.sprite.image = services.assetManager.images["test.png"];
+    this.sprite.x = 100;
+    this.sprite.y = 100;
+    this.spriteManager.add(this.sprite);
 };
 
 GameStateTitle.prototype.loseFocus = function(oldState) {
@@ -55,4 +60,11 @@ GameStateTitle.prototype.loseFocus = function(oldState) {
 };
 
 GameStateTitle.prototype.update = function(ctx) {
+    ctx.fillStyle = "#FFFF00";
+    ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+
+    this.sprite.x++;
+    this.sprite.y++;
+
+    this.spriteManager.draw(ctx, {x:0, y:0});
 };
