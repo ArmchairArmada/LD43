@@ -17,7 +17,11 @@ GameStateManager.prototype.addState = function(name, state) {
 };
 
 GameStateManager.prototype.update = function(ctx) {
-    this.currentState.update(ctx);
+    this.currentState.update();
+};
+
+GameStateManager.prototype.draw = function(ctx) {
+    this.currentState.draw(ctx);
 };
 
 
@@ -34,7 +38,10 @@ GameStateIntro.prototype.loseFocus = function(oldState) {
     console.log("Game State Intro losing focus");
 };
 
-GameStateIntro.prototype.update = function(ctx) {
+GameStateIntro.prototype.update = function() {
+};
+
+GameStateIntro.prototype.draw = function(ctx) {
     ctx.fillStyle = "#FF0000";
     ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
 };
@@ -48,9 +55,9 @@ function GameStateTitle() {
     this.animation = {
         playMode: "loop",
         frames: [
-            {time: 30, value: [1, 0, 0]},
-            {time: 30, value: [0, 1, 0]},
-            {time: 30, value: [0, 0, 1]}
+            {time: 600, value: [1, 0, 0]},
+            {time: 600, value: [0, 1, 0]},
+            {time: 600, value: [0, 0, 1]}
         ]
     };
 
@@ -70,9 +77,30 @@ GameStateTitle.prototype.loseFocus = function(oldState) {
     console.log("Game State Title losing focus");
 };
 
-GameStateTitle.prototype.update = function(ctx) {
-    this.animCursor.update();
+GameStateTitle.prototype.update = function() {
+    if (services.inputManager.keyAction) {
+        this.animCursor.update();
+        this.scene.update();
+    }
 
+    if (services.inputManager.keyUpChange) {
+        this.scene.camera.y-=20;
+    }
+
+    if (services.inputManager.keyDownChange) {
+        this.scene.camera.y+=20;
+    }
+
+    if (services.inputManager.keyLeftChange) {
+        this.scene.camera.x-=20;
+    }
+
+    if (services.inputManager.keyRightChange) {
+        this.scene.camera.x+=20;
+    }
+};
+
+GameStateTitle.prototype.draw = function(ctx) {
     var p = this.animCursor.progress;
     var r = Math.floor(255 * (this.animCursor.frame.value[0] * (1 - p) + this.animCursor.nextFrame.value[0] * p));
     var g = Math.floor(255 * (this.animCursor.frame.value[1] * (1 - p) + this.animCursor.nextFrame.value[1] * p));
@@ -81,8 +109,5 @@ GameStateTitle.prototype.update = function(ctx) {
     ctx.fillStyle = "rgb(" + r + "," + g + "," + b + ")";
     ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
 
-    console.log(ctx.fillStyle);
-
-    this.scene.update();
     this.scene.draw(ctx);
 };
