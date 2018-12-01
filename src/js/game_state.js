@@ -43,16 +43,15 @@ GameStateIntro.prototype.update = function(ctx) {
 // --------------------------------------------------------------------------------------------------------------------
 function GameStateTitle() {
     console.log("Creating Game State Title");
-    this.spriteManager = new SpriteManager();
+    this.scene = new Scene();
 };
 
 GameStateTitle.prototype.gainFocus = function(oldState) {
     console.log("Game State Title gaining focus");
-    this.sprite = new Sprite();
-    this.sprite.image = services.assetManager.images["test.png"];
-    this.sprite.x = 100;
-    this.sprite.y = 100;
-    this.spriteManager.add(this.sprite);
+    for (var i=0; i<1000; i++) {
+        var entity = new TestEntity(this.scene);
+        this.scene.entityManager.add(entity);
+    }
 };
 
 GameStateTitle.prototype.loseFocus = function(oldState) {
@@ -63,8 +62,6 @@ GameStateTitle.prototype.update = function(ctx) {
     ctx.fillStyle = "#FFFF00";
     ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
 
-    this.sprite.x++;
-    this.sprite.y++;
-
-    this.spriteManager.draw(ctx, {x:0, y:0});
+    this.scene.update();
+    this.scene.draw(ctx);
 };
