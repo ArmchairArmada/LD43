@@ -30,5 +30,5 @@ function Sprite() {
 }
 
 Sprite.prototype.draw = function(ctx, camera) {
-    ctx.drawImage(this.image, this.x - camera.x, this.y - camera.y);
+    ctx.drawImage(this.image, Math.floor(this.x) - Math.floor(camera.x), Math.floor(this.y) - Math.floor(camera.y));
 }
