@@ -50,7 +50,7 @@ GameStateIntro.prototype.draw = function(ctx) {
 // --------------------------------------------------------------------------------------------------------------------
 function GameStateTitle() {
     console.log("Creating Game State Title");
-    this.scene = new Scene();
+    this.scene = new Scene(globals.canvasWidth, globals.canvasHeight);
 
     this.animation = {
         playMode: "loop",
@@ -67,7 +67,7 @@ function GameStateTitle() {
 
 GameStateTitle.prototype.gainFocus = function(oldState) {
     console.log("Game State Title gaining focus");
-    for (var i=0; i<100; i++) {
+    for (var i=0; i<500; i++) {
         var entity = new TestEntity(this.scene);
         this.scene.entityManager.add(entity);
     }
@@ -109,19 +109,19 @@ GameStateTitle.prototype.update = function() {
     }
 
     if (services.inputManager.keyUp) {
-        this.scene.camera.y-=0.2;
+        this.scene.camera.y-=1;
     }
 
     if (services.inputManager.keyDown) {
-        this.scene.camera.y+=0.2;
+        this.scene.camera.y+=1;
     }
 
     if (services.inputManager.keyLeft) {
-        this.scene.camera.x-=0.2;
+        this.scene.camera.x-=1;
     }
 
     if (services.inputManager.keyRight) {
-        this.scene.camera.x+=0.2;
+        this.scene.camera.x+=1;
     }
 };
 
@@ -133,8 +133,6 @@ GameStateTitle.prototype.draw = function(ctx) {
 
     ctx.fillStyle = "rgb(" + r + "," + g + "," + b + ")";
     ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-
-    //this.tilemap.draw(ctx, this.scene.camera);
 
     this.scene.draw(ctx);
 };
