@@ -31,7 +31,8 @@ function Game(canvasId) {
         "images": [
             "test.png",
             "floor.png",
-            "wall.png"
+            "wall.png",
+            "wall_side.png"
         ]
     });
 }
