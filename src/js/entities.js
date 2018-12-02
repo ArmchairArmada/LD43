@@ -1,7 +1,7 @@
-function Scene() {
+function Scene(width, height) {
     this.entityManager = new EntityManager();
-    this.spriteManager = new SpriteManager();
-    this.camera = {x:0, y:0};
+    this.spriteManager = new SpriteManager(128);
+    this.camera = new Rect(0, 0, width, height, null);
 }
 
 Scene.prototype.update = function() {
@@ -46,20 +46,22 @@ EntityManager.prototype.update = function() {
 function TestEntity(scene) {
     this.scene = scene;
 
-    this.sprite = new Sprite();
-    this.sprite.x = Math.random() * 800;
-    this.sprite.y = Math.random() * 600;
-    this.sprite.image = services.assetManager.images["test.png"];
-    scene.spriteManager.add(this.sprite);
+    this.sprite = new Sprite(
+        scene.spriteManager,
+        services.assetManager.images["test.png"],
+        Math.random() * 800,
+        Math.random() * 600,
+        0);
 
     this.dx = Math.random() - 0.5;
     this.dy = Math.random() - 0.5;
 }
 
 TestEntity.prototype.update = function() {
-    this.sprite.x += this.dx;
-    this.sprite.y += this.dy;
-    this.sprite.z = -this.sprite.y;
+    this.sprite.move(
+        this.sprite.rect.x + this.dx,
+        this.sprite.rect.y + this.dy);
+    this.sprite.z = -this.sprite.rect.y;
 
     return true;
 };

@@ -11,6 +11,9 @@ function Game(canvasId) {
     this.canvas = document.getElementById(canvasId);
     this.ctx = this.canvas.getContext("2d");
 
+    globals.canvasWidth = this.canvas.width;
+    globals.canvasHeight = this.canvas.height;
+
     services.inputManager = new InputManager(this.canvas);
 
     services.stateManager = new GameStateManager();
