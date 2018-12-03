@@ -72,10 +72,13 @@ GameStateTitle.prototype.gainFocus = function(oldState) {
         this.scene.entityManager.add(entity);
     }
 
+    this.scene.entityManager.add(new PlayerEntity(this.scene));
+    this.scene.entityManager.add(new TargetEntity(this.scene));
+
     this.tilemap = new TileMap([
-        services.assetManager.images["floor.png"],
-        services.assetManager.images["wall.png"],
-        services.assetManager.images["wall_side.png"]
+        {image: services.assetManager.images["floor.png"], depth: 50},
+        {image: services.assetManager.images["wall.png"], depth: -50},
+        {image: services.assetManager.images["wall_side.png"], depth: 0}
     ],
     50, 50,
     [
@@ -84,13 +87,13 @@ GameStateTitle.prototype.gainFocus = function(oldState) {
         [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
         [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
         [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+        [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2],
+        [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
         [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
         [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-        [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-        [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-        [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-        [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2]
+        [1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1],
+        [2, 2, 2, 2, 2, 2, 2, 0, 0, 2, 2, 2, 2, 2, 2, 2]
     ]);
 
     this.tilemap.addSpriteTiles(this.scene.spriteManager);
@@ -101,26 +104,8 @@ GameStateTitle.prototype.loseFocus = function(oldState) {
 };
 
 GameStateTitle.prototype.update = function() {
-    if (services.inputManager.keyAction) {
-        this.animCursor.update();
-        this.scene.update();
-    }
-
-    if (services.inputManager.keyUp) {
-        this.scene.camera.y-=1;
-    }
-
-    if (services.inputManager.keyDown) {
-        this.scene.camera.y+=1;
-    }
-
-    if (services.inputManager.keyLeft) {
-        this.scene.camera.x-=1;
-    }
-
-    if (services.inputManager.keyRight) {
-        this.scene.camera.x+=1;
-    }
+    this.animCursor.update();
+    this.scene.update();
 };
 
 GameStateTitle.prototype.draw = function(ctx) {

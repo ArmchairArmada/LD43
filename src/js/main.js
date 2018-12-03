@@ -32,7 +32,9 @@ function Game(canvasId) {
             "test.png",
             "floor.png",
             "wall.png",
-            "wall_side.png"
+            "wall_side.png",
+            "wizard.png",
+            "target.png"
         ]
     });
 }
